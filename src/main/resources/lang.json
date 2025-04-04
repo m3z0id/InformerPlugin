@@ -1,0 +1,13 @@
+{
+  "serverPrefix": "&8[&2Server&8] ",
+  "brandMessage": "&e%player% joined with: &l%brand%",
+  "newPlayerMessage": "&eNew Player: &l%player%",
+  "altsMessage": "&e%player%'s alts: %alts%",
+  "ipsMessage": "&e%player%'s IPs: %ips%",
+  "badSyntax": "&cUnknown subcommand!",
+  "nothingFound": "&cNothing was found!",
+  "successMessage": "&eSuccess!",
+  "notInDatabase": "&cPlayer is not in the database!",
+  "entryFormatting": "&c&l",
+  "dividerFormatting": "&c"
+}

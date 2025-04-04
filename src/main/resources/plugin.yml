@@ -1,7 +1,25 @@
 name: Informer
 version: '1.0'
 main: com.m3z0id.informer.Informer
-api-version: '1.18'
+api-version: '1.17'
 load: STARTUP
 authors: [ M3z0id ]
-description: A very customizable KitPvP plugin
+description: Shows you info about a player, like alts or client.
+
+commands:
+  client:
+    usage: /<command> <player>
+    permission: informer.client
+  alts:
+    usage: /<command> [player]
+    permission: informer.alts
+  ips:
+    usage: /<command> [player]
+    permission: informer.ips
+  informer:
+    usage: /<command> [reload/info]
+    permission: informer.info
+
+permissions:
+  informer.*:
+    default: op
