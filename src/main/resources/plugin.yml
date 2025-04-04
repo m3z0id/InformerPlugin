@@ -1,0 +1,7 @@
+name: Informer
+version: '1.0'
+main: com.m3z0id.informer.Informer
+api-version: '1.18'
+load: STARTUP
+authors: [ M3z0id ]
+description: A very customizable KitPvP plugin
