@@ -19,6 +19,9 @@ commands:
   informer:
     usage: /<command> [reload/info]
     permission: informer.info
+  dataremove:
+    usage: /<command> [ip/player] <value>
+    permission: informer.remove
 
 permissions:
   informer.*:

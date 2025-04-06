@@ -1,9 +1,6 @@
 package com.m3z0id.informer;
 
-import com.m3z0id.informer.commands.AltsCommand;
-import com.m3z0id.informer.commands.BrandsCommand;
-import com.m3z0id.informer.commands.InformerCommand;
-import com.m3z0id.informer.commands.IpsCommand;
+import com.m3z0id.informer.commands.*;
 import com.m3z0id.informer.config.Config;
 import com.m3z0id.informer.config.Lang;
 import com.m3z0id.informer.database.Database;
@@ -44,6 +41,9 @@ public final class Informer extends JavaPlugin {
 
         getCommand("informer").setExecutor(new InformerCommand());
         getCommand("informer").setTabCompleter(new InformerCommand());
+
+        getCommand("dataremove").setExecutor(new RemoveCommand());
+        getCommand("dataremove").setTabCompleter(new RemoveCommand());
 
         Bukkit.getMessenger().registerIncomingPluginChannel(this, "minecraft:brand", new JoinEvent());
         Bukkit.getPluginManager().registerEvents(new LeaveEvent(), this);

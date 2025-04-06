@@ -11,6 +11,7 @@ import org.bukkit.command.TabCompleter;
 
 import javax.annotation.Nonnull;
 import java.util.ArrayList;
+import java.util.LinkedHashSet;
 import java.util.List;
 
 public class AltsCommand implements CommandExecutor, TabCompleter {
@@ -30,7 +31,7 @@ public class AltsCommand implements CommandExecutor, TabCompleter {
             return true;
         }
 
-        List<String> players = new ArrayList<>();
+        LinkedHashSet<String> players = new LinkedHashSet<>();
         for(String ip : ips) {
             List<String> currentEntry = database.getPlayersByIp(ip);
             assert currentEntry != null;
@@ -42,13 +43,14 @@ public class AltsCommand implements CommandExecutor, TabCompleter {
             return true;
         }
 
+        List<String> playersList = new ArrayList<>(players);
         StringBuilder playersBuilder = new StringBuilder();
         playersBuilder.append(lang.getEntryFormatting());
-        for(int i = 0; i < players.size(); i++) {
+        for(int i = 0; i < playersList.size(); i++) {
             if(i == 0 || playersBuilder.isEmpty()) {
-                playersBuilder.append(lang.getEntryFormatting()).append(players.get(i));
+                playersBuilder.append(lang.getEntryFormatting()).append(playersList.get(i));
             } else {
-                playersBuilder.append(lang.getDividerFormatting() + ", " + lang.getEntryFormatting()).append(players.get(i));
+                playersBuilder.append(lang.getDividerFormatting() + ", " + lang.getEntryFormatting()).append(playersList.get(i));
             }
         }
 
