@@ -15,7 +15,7 @@ public class Lang {
     private String brandMessage;
     private String newPlayerMessage;
     private String altsMessage;
-    private String unknownSubcommand;
+    private String badSyntax;
     private String nothingFound;
     private String entryFormatting;
     private String dividerFormatting;
@@ -36,7 +36,7 @@ public class Lang {
         return altsMessage;
     }
     public String getUnknownSubcommand() {
-        return unknownSubcommand;
+        return badSyntax;
     }
     public String getNothingFound() {
         return nothingFound;
