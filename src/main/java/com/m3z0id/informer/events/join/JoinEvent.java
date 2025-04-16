@@ -21,7 +21,7 @@ public class JoinEvent implements PluginMessageListener {
         Informer.instance.clientBrands.put(player.getName(), brand);
         InetAddress ip = getIp(player);
 
-        Bukkit.broadcast(ChatColor.translateAlternateColorCodes('&', lang.getBrandMessage().replaceAll("%brand%", brand).replaceAll("%player%", player.getName())), Informer.instance.config.getNotificationPermission());
+        Bukkit.broadcast(ChatColor.translateAlternateColorCodes('&', lang.getServerPrefix() + lang.getBrandMessage().replaceAll("%brand%", brand).replaceAll("%player%", player.getName())), Informer.instance.config.getNotificationPermission());
         if(ip == null) return;
 
         List<String> players = Informer.instance.database.getPlayersByIp(ip.toString());
