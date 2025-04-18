@@ -10,8 +10,6 @@ import org.bukkit.command.TabCompleter;
 
 import javax.annotation.Nonnull;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.LinkedHashSet;
 import java.util.List;
 
 public class RemoveCommand implements CommandExecutor, TabCompleter {
@@ -30,14 +28,11 @@ public class RemoveCommand implements CommandExecutor, TabCompleter {
         }
         else if(args[0].equalsIgnoreCase("player")) {
             List<String> ips = Informer.instance.database.getIps();
-            if(ips == null || ips.isEmpty()){
+            if(ips.isEmpty()){
                 commandSender.sendMessage(ChatColor.translateAlternateColorCodes('&', lang.getServerPrefix() + lang.getSuccessMessage()));
                 return true;
             }
-            for(String ip : ips) {
-                String databaseIp = "/" + ip;
-                Informer.instance.database.removePlayer(args[1], databaseIp);
-            }
+            ips.forEach(ip -> Informer.instance.database.removePlayer(args[1], "/" + ip));
             commandSender.sendMessage(ChatColor.translateAlternateColorCodes('&', lang.getServerPrefix() + lang.getSuccessMessage()));
             return true;
         } else {
@@ -59,25 +54,14 @@ public class RemoveCommand implements CommandExecutor, TabCompleter {
         }
         if(args.length == 2) {
             if(args[0].equalsIgnoreCase("ip")) {
-                List<String> temp = Informer.instance.database.getIps();
-                if(temp == null || temp.isEmpty()) {
-                    return List.of("");
-                }
-                for(String ip : temp) {
-                    if(ip.startsWith(args[1])) list.add(ip);
-                }
+                list = Informer.instance.database.getIps().stream()
+                        .filter(entry -> entry.startsWith(args[1]))
+                        .toList();
             }
             if(args[0].equalsIgnoreCase("player")) {
-                List<String> templist = Informer.instance.database.getPlayers();
-                if(templist == null) return List.of("");
-                List<String> tempSet = new ArrayList<>();
-                for(String entry : templist) {
-                    LinkedHashSet<String> temp = new LinkedHashSet<>(Arrays.asList(entry.split(";")));
-                    for(String tempidk : temp) {
-                        if(tempidk.startsWith(args[1])) tempSet.add(tempidk);
-                    }
-                }
-                list = new ArrayList<>(new LinkedHashSet<>(tempSet));
+                list = Informer.instance.database.getPlayers().stream()
+                        .filter(entry -> entry.startsWith(args[1]))
+                        .toList();
             }
         }
         return list;

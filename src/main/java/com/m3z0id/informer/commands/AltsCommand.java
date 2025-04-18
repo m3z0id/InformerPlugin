@@ -26,17 +26,16 @@ public class AltsCommand implements CommandExecutor, TabCompleter {
         Database database = Informer.instance.database;
 
         List<String> ips = database.getIpsByPlayer(args[0]);
-        if(ips == null || ips.isEmpty()) {
+        if(ips.isEmpty()) {
             commandSender.sendMessage(ChatColor.translateAlternateColorCodes('&', lang.getServerPrefix() + lang.getNothingFound()));
             return true;
         }
 
         LinkedHashSet<String> players = new LinkedHashSet<>();
-        for(String ip : ips) {
+        ips.forEach(ip -> {
             List<String> currentEntry = database.getPlayersByIp(ip);
-            assert currentEntry != null;
             players.addAll(currentEntry);
-        }
+        });
 
         if(players.isEmpty()) {
             commandSender.sendMessage(ChatColor.translateAlternateColorCodes('&', lang.getServerPrefix() + lang.getNothingFound()));
@@ -44,17 +43,10 @@ public class AltsCommand implements CommandExecutor, TabCompleter {
         }
 
         List<String> playersList = new ArrayList<>(players);
-        StringBuilder playersBuilder = new StringBuilder();
-        playersBuilder.append(lang.getEntryFormatting());
-        for(int i = 0; i < playersList.size(); i++) {
-            if(i == 0 || playersBuilder.isEmpty()) {
-                playersBuilder.append(lang.getEntryFormatting()).append(playersList.get(i));
-            } else {
-                playersBuilder.append(lang.getDividerFormatting() + ", " + lang.getEntryFormatting()).append(playersList.get(i));
-            }
-        }
 
-        commandSender.sendMessage(ChatColor.translateAlternateColorCodes('&', lang.getServerPrefix() + lang.getAltsMessage().replaceAll("%player%", args[0]).replaceAll("%alts%", playersBuilder.toString())));
+        String alts = lang.getEntryFormatting() + String.join(lang.getDividerFormatting() + ", " + lang.getEntryFormatting(), playersList);
+
+        commandSender.sendMessage(ChatColor.translateAlternateColorCodes('&', lang.getServerPrefix() + lang.getAltsMessage().replaceAll("%player%", args[0]).replaceAll("%alts%", alts)));
         return true;
     }
 

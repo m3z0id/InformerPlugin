@@ -19,21 +19,13 @@ public class IpsCommand implements CommandExecutor, TabCompleter {
         Lang lang = Informer.instance.lang;
 
         List<String> ips = database.getIpsByPlayer(args[0]);
-        if(ips == null || ips.isEmpty()) {
+        if(ips.isEmpty()) {
             commandSender.sendMessage(ChatColor.translateAlternateColorCodes('&', lang.getServerPrefix() + lang.getNothingFound()));
             return true;
         }
 
-        StringBuilder ipBuilder = new StringBuilder();
-        ipBuilder.append(lang.getEntryFormatting());
-        for (int i = 0; i < ips.size(); i++) {
-            if(i < ips.size() - 1) {
-                ipBuilder.append(ips.get(i)).append(lang.getDividerFormatting() + ", " + lang.getEntryFormatting());
-            } else {
-                ipBuilder.append(ips.get(i));
-            }
-        }
-        commandSender.sendMessage(ChatColor.translateAlternateColorCodes('&', lang.getServerPrefix() + lang.getIpsMessage().replaceAll("%ips%", ipBuilder.toString().replaceAll("/", "")).replaceAll("%player%", args[0])));
+        String allIps = lang.getEntryFormatting() + String.join(lang.getDividerFormatting() + ", " + lang.getEntryFormatting(), ips);
+        commandSender.sendMessage(ChatColor.translateAlternateColorCodes('&', lang.getServerPrefix() + lang.getIpsMessage().replaceAll("%ips%", allIps.replaceAll("/", "")).replaceAll("%player%", args[0])));
 
         return true;
     }
