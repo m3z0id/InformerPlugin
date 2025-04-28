@@ -2,11 +2,9 @@ package com.m3z0id.informer.commands;
 
 import com.m3z0id.informer.Informer;
 import com.m3z0id.informer.config.Lang;
+import com.m3z0id.informer.database.EssentialsImport;
 import net.md_5.bungee.api.ChatColor;
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
-import org.bukkit.command.CommandSender;
-import org.bukkit.command.TabCompleter;
+import org.bukkit.command.*;
 
 import javax.annotation.Nonnull;
 import java.util.ArrayList;
@@ -20,11 +18,22 @@ public class InformerCommand implements CommandExecutor, TabCompleter {
             commandSender.sendMessage(ChatColor.translateAlternateColorCodes('&', lang.getServerPrefix() + lang.getUnknownSubcommand()));
             return true;
         }
-        if(args.length == 1 && args[0].equals("reload")) {
-            Informer.instance.load();
-            commandSender.sendMessage(ChatColor.translateAlternateColorCodes('&', lang.getServerPrefix() + lang.getSuccessMessage()));
-        } else {
-            commandSender.sendMessage(ChatColor.translateAlternateColorCodes('&', lang.getServerPrefix() + lang.getUnknownSubcommand()));
+        if(args.length == 1) {
+            if(args[0].equals("reload")) {
+                Informer.instance.load();
+                commandSender.sendMessage(ChatColor.translateAlternateColorCodes('&', lang.getServerPrefix() + lang.getSuccessMessage()));
+            }
+            else if(args[0].equals("importEssX")) {
+                if(!(commandSender instanceof ConsoleCommandSender)){
+                    commandSender.sendMessage(ChatColor.translateAlternateColorCodes('&', lang.getServerPrefix() + ChatColor.RED + "This is a console-only command."));
+                    return true;
+                }
+                EssentialsImport.run();
+                commandSender.sendMessage(ChatColor.translateAlternateColorCodes('&', lang.getServerPrefix() + lang.getSuccessMessage()));
+            }
+            else {
+                commandSender.sendMessage(ChatColor.translateAlternateColorCodes('&', lang.getServerPrefix() + lang.getUnknownSubcommand()));
+            }
         }
         return true;
     }
@@ -35,6 +44,9 @@ public class InformerCommand implements CommandExecutor, TabCompleter {
         if(args.length == 1) {
             if("reload".startsWith(args[0])) {
                 choices.add("reload");
+            }
+            if("importEssX".startsWith(args[0])) {
+                choices.add("importEssX");
             }
             return choices;
         }

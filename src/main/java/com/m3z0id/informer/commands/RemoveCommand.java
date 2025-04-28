@@ -3,10 +3,7 @@ package com.m3z0id.informer.commands;
 import com.m3z0id.informer.Informer;
 import com.m3z0id.informer.config.Lang;
 import net.md_5.bungee.api.ChatColor;
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
-import org.bukkit.command.CommandSender;
-import org.bukkit.command.TabCompleter;
+import org.bukkit.command.*;
 
 import javax.annotation.Nonnull;
 import java.util.ArrayList;
@@ -16,6 +13,10 @@ public class RemoveCommand implements CommandExecutor, TabCompleter {
     @Override
     public boolean onCommand(@Nonnull CommandSender commandSender, @Nonnull Command command, @Nonnull String s, @Nonnull String[] args) {
         Lang lang = Informer.instance.lang;
+        if(args.length == 0) {
+            commandSender.sendMessage(ChatColor.translateAlternateColorCodes('&', lang.getServerPrefix() + ChatColor.RED + "This is a console-only command."));
+            return true;
+        }
         if(args.length != 2) {
             commandSender.sendMessage(ChatColor.translateAlternateColorCodes('&', lang.getServerPrefix() + lang.getUnknownSubcommand()));
             return true;
@@ -43,6 +44,9 @@ public class RemoveCommand implements CommandExecutor, TabCompleter {
 
     @Override
     public List<String> onTabComplete(@Nonnull CommandSender commandSender, @Nonnull Command command, @Nonnull String s, @Nonnull String[] args) {
+        if(!(commandSender instanceof ConsoleCommandSender)){
+            return List.of();
+        }
         List<String> list = new ArrayList<>();
         if(args.length == 1) {
             if("ip".startsWith(args[0])) {

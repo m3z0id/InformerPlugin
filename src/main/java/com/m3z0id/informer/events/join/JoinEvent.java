@@ -20,18 +20,23 @@ public class JoinEvent implements PluginMessageListener {
         Informer.instance.clientBrands.put(player.getName(), brand);
         InetAddress ip = player.getAddress().getAddress();
 
-        Bukkit.broadcast(ChatColor.translateAlternateColorCodes('&', lang.getServerPrefix() + lang.getBrandMessage().replaceAll("%brand%", brand).replaceAll("%player%", player.getName())), Informer.instance.config.getNotificationPermission());
+        String msg = ChatColor.translateAlternateColorCodes('&', lang.getServerPrefix() + lang.getBrandMessage().replaceAll("%brand%", brand).replaceAll("%player%", player.getName()));
+        Bukkit.broadcast(msg, Informer.instance.config.getNotificationPermission());
+        Informer.instance.getLogger().info(msg);
         if(ip == null) return;
 
         List<String> players = Informer.instance.database.getPlayersByIp(ip.toString());
         if(players.isEmpty()) {
-            Bukkit.broadcast(ChatColor.translateAlternateColorCodes('&', lang.getServerPrefix() + lang.getNewPlayerMessage().replaceAll("%player%", player.getName())), Informer.instance.config.getNotificationPermission());
+            msg = ChatColor.translateAlternateColorCodes('&', lang.getServerPrefix() + lang.getNewPlayerMessage().replaceAll("%player%", player.getName()));
+            Bukkit.broadcast(msg, Informer.instance.config.getNotificationPermission());
             Informer.instance.database.addPlayer(ip.toString(), player.getName());
             return;
         }
 
         String alts = lang.getEntryFormatting() + String.join(lang.getDividerFormatting() + ", " + lang.getEntryFormatting(), players);
-        Bukkit.broadcast(ChatColor.translateAlternateColorCodes('&', lang.getServerPrefix() + lang.getAltsMessage().replaceAll("%player%", player.getName()).replaceAll("%alts%", alts)), Informer.instance.config.getNotificationPermission());
+        msg = ChatColor.translateAlternateColorCodes('&', lang.getServerPrefix() + lang.getAltsMessage().replaceAll("%player%", player.getName()).replaceAll("%alts%", alts));
+        Bukkit.broadcast(msg, Informer.instance.config.getNotificationPermission());
+        Informer.instance.getLogger().info(msg);
 
         Informer.instance.database.addPlayer(ip.toString(), player.getName());
     }
