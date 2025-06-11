@@ -3,7 +3,7 @@ package com.m3z0id.informer.commands;
 import com.m3z0id.informer.Informer;
 import com.m3z0id.informer.config.Lang;
 import com.m3z0id.informer.database.Database;
-import net.md_5.bungee.api.ChatColor;
+import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -19,7 +19,7 @@ public class AltsCommand implements CommandExecutor, TabCompleter {
     public boolean onCommand(@Nonnull CommandSender commandSender, @Nonnull Command command, @Nonnull String s, @Nonnull String[] args) {
         Lang lang = Informer.instance.lang;
         if(args.length < 1) {
-            commandSender.sendMessage(ChatColor.translateAlternateColorCodes('&', lang.getServerPrefix() + lang.getUnknownSubcommand()));
+            commandSender.sendMessage(LegacyComponentSerializer.legacySection().deserialize(lang.getServerPrefix() + lang.getUnknownSubcommand()));
             return true;
         }
 
@@ -27,7 +27,7 @@ public class AltsCommand implements CommandExecutor, TabCompleter {
 
         List<String> ips = database.getIpsByPlayer(args[0]);
         if(ips.isEmpty()) {
-            commandSender.sendMessage(ChatColor.translateAlternateColorCodes('&', lang.getServerPrefix() + lang.getNothingFound()));
+            commandSender.sendMessage(LegacyComponentSerializer.legacySection().deserialize(lang.getServerPrefix() + lang.getNothingFound()));
             return true;
         }
 
@@ -38,7 +38,7 @@ public class AltsCommand implements CommandExecutor, TabCompleter {
         });
 
         if(players.isEmpty()) {
-            commandSender.sendMessage(ChatColor.translateAlternateColorCodes('&', lang.getServerPrefix() + lang.getNothingFound()));
+            commandSender.sendMessage(LegacyComponentSerializer.legacySection().deserialize(lang.getServerPrefix() + lang.getNothingFound()));
             return true;
         }
 
@@ -46,7 +46,7 @@ public class AltsCommand implements CommandExecutor, TabCompleter {
 
         String alts = lang.getEntryFormatting() + String.join(lang.getDividerFormatting() + ", " + lang.getEntryFormatting(), playersList);
 
-        commandSender.sendMessage(ChatColor.translateAlternateColorCodes('&', lang.getServerPrefix() + lang.getAltsMessage().replaceAll("%player%", args[0]).replaceAll("%alts%", alts)));
+        commandSender.sendMessage(LegacyComponentSerializer.legacySection().deserialize(lang.getServerPrefix() + lang.getAltsMessage().replaceAll("%player%", args[0]).replaceAll("%alts%", alts)));
         return true;
     }
 

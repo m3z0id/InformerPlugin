@@ -34,9 +34,7 @@ public class EssentialsImport {
                 String username = (String) data.get("last-account-name");
 
                 database.addPlayer(ip, username);
-            } catch (FileNotFoundException e) {
-                continue;
-            }
+            } catch (FileNotFoundException ignored) {}
         }
 
         return true;

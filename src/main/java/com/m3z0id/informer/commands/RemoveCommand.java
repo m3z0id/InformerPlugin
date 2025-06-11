@@ -2,7 +2,8 @@ package com.m3z0id.informer.commands;
 
 import com.m3z0id.informer.Informer;
 import com.m3z0id.informer.config.Lang;
-import net.md_5.bungee.api.ChatColor;
+import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
+import org.bukkit.ChatColor;
 import org.bukkit.command.*;
 
 import javax.annotation.Nonnull;
@@ -14,30 +15,30 @@ public class RemoveCommand implements CommandExecutor, TabCompleter {
     public boolean onCommand(@Nonnull CommandSender commandSender, @Nonnull Command command, @Nonnull String s, @Nonnull String[] args) {
         Lang lang = Informer.instance.lang;
         if(args.length == 0) {
-            commandSender.sendMessage(ChatColor.translateAlternateColorCodes('&', lang.getServerPrefix() + ChatColor.RED + "This is a console-only command."));
+            commandSender.sendMessage(LegacyComponentSerializer.legacySection().deserialize(lang.getServerPrefix() + ChatColor.RED + "This is a console-only command."));
             return true;
         }
         if(args.length != 2) {
-            commandSender.sendMessage(ChatColor.translateAlternateColorCodes('&', lang.getServerPrefix() + lang.getUnknownSubcommand()));
+            commandSender.sendMessage(LegacyComponentSerializer.legacySection().deserialize(lang.getServerPrefix() + lang.getUnknownSubcommand()));
             return true;
         }
         if(args[0].equalsIgnoreCase("ip")) {
             String ip = "/" + args[1];
             Informer.instance.database.removeIp(ip);
-            commandSender.sendMessage(ChatColor.translateAlternateColorCodes('&', lang.getServerPrefix() + lang.getSuccessMessage()));
+            commandSender.sendMessage(LegacyComponentSerializer.legacySection().deserialize(lang.getServerPrefix() + lang.getSuccessMessage()));
             return true;
         }
         else if(args[0].equalsIgnoreCase("player")) {
             List<String> ips = Informer.instance.database.getIps();
             if(ips.isEmpty()){
-                commandSender.sendMessage(ChatColor.translateAlternateColorCodes('&', lang.getServerPrefix() + lang.getSuccessMessage()));
+                commandSender.sendMessage(LegacyComponentSerializer.legacySection().deserialize(lang.getServerPrefix() + lang.getSuccessMessage()));
                 return true;
             }
             ips.forEach(ip -> Informer.instance.database.removePlayer(args[1], "/" + ip));
-            commandSender.sendMessage(ChatColor.translateAlternateColorCodes('&', lang.getServerPrefix() + lang.getSuccessMessage()));
+            commandSender.sendMessage(LegacyComponentSerializer.legacySection().deserialize(lang.getServerPrefix() + lang.getSuccessMessage()));
             return true;
         } else {
-            commandSender.sendMessage(ChatColor.translateAlternateColorCodes('&', lang.getServerPrefix() + lang.getUnknownSubcommand()));
+            commandSender.sendMessage(LegacyComponentSerializer.legacySection().deserialize(lang.getServerPrefix() + lang.getUnknownSubcommand()));
             return true;
         }
     }

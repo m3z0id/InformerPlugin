@@ -19,7 +19,6 @@ public class Lang {
     private String nothingFound;
     private String entryFormatting;
     private String dividerFormatting;
-    private String notInDatabase;
     private String ipsMessage;
     private String successMessage;
 
@@ -47,9 +46,7 @@ public class Lang {
     public String getDividerFormatting() {
         return dividerFormatting;
     }
-    public String getNotInDatabase() {
-        return notInDatabase;
-    }
+
     public String getIpsMessage() {
         return ipsMessage;
     }

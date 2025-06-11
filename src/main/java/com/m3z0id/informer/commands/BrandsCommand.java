@@ -2,7 +2,7 @@ package com.m3z0id.informer.commands;
 
 import com.m3z0id.informer.Informer;
 import com.m3z0id.informer.config.Lang;
-import net.md_5.bungee.api.ChatColor;
+import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -19,15 +19,15 @@ public class BrandsCommand implements CommandExecutor, TabCompleter {
         Player player = Bukkit.getPlayer(args[0]);
         Lang lang = Informer.instance.lang;
         if (player == null) {
-            commandSender.sendMessage(ChatColor.translateAlternateColorCodes('&', lang.getServerPrefix() + lang.getNothingFound()));
+            commandSender.sendMessage(LegacyComponentSerializer.legacySection().deserialize(lang.getServerPrefix() + lang.getNothingFound()));
             return true;
         }
         String brand = Informer.instance.clientBrands.getOrDefault(player.getName(), null);
         if (brand == null) {
-            commandSender.sendMessage(ChatColor.translateAlternateColorCodes('&', lang.getServerPrefix() + lang.getNothingFound()));
+            commandSender.sendMessage(LegacyComponentSerializer.legacySection().deserialize(lang.getServerPrefix() + lang.getNothingFound()));
             return true;
         }
-        commandSender.sendMessage(ChatColor.translateAlternateColorCodes('&', lang.getServerPrefix() + lang.getBrandMessage().replaceAll("%brand%", brand).replaceAll("%player%", player.getName())));
+        commandSender.sendMessage(LegacyComponentSerializer.legacySection().deserialize(lang.getServerPrefix() + lang.getBrandMessage().replaceAll("%brand%", brand).replaceAll("%player%", player.getName())));
         return true;
     }
 
