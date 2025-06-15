@@ -7,10 +7,8 @@ import io.papermc.paper.command.brigadier.BasicCommand;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
 import net.kyori.adventure.text.format.TextDecoration;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
-import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
-import org.bukkit.entity.Player;
 import org.jspecify.annotations.Nullable;
 
 import java.util.ArrayList;
@@ -55,10 +53,7 @@ public class AltsCommand implements BasicCommand {
 
     @Override
     public Collection<String> suggest(CommandSourceStack commandSourceStack, String[] args) {
-        // TODO: Suggest players from the database instead of online players
-        return Bukkit.getOnlinePlayers().stream()
-                .map(Player::getName)
-                .toList();
+        return Informer.instance.database.getPlayers();
     }
 
     @Override

@@ -6,10 +6,8 @@ import com.m3z0id.informer.database.Database;
 import io.papermc.paper.command.brigadier.BasicCommand;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.*;
-import org.bukkit.entity.Player;
 import org.jspecify.annotations.Nullable;
 
 import java.util.Collection;
@@ -37,10 +35,7 @@ public class IpsCommand implements BasicCommand {
 
     @Override
     public Collection<String> suggest(CommandSourceStack commandSourceStack, String[] args) {
-        // TODO: Suggest players from the database instead of online players
-        return Bukkit.getOnlinePlayers().stream()
-                .map(Player::getName)
-                .toList();
+        return Informer.instance.database.getPlayers();
     }
 
     @Override
