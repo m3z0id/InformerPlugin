@@ -4,8 +4,9 @@ import com.m3z0id.informer.commands.*;
 import com.m3z0id.informer.config.Config;
 import com.m3z0id.informer.config.Lang;
 import com.m3z0id.informer.database.Database;
-import com.m3z0id.informer.events.join.JoinEvent;
-import com.m3z0id.informer.events.join.LeaveEvent;
+import com.m3z0id.informer.events.JoinEvent;
+import com.m3z0id.informer.events.LeaveEvent;
+import io.papermc.paper.plugin.lifecycle.event.types.LifecycleEvents;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -28,20 +29,13 @@ public final class Informer extends JavaPlugin {
 
         clientBrands = new HashMap<>();
 
-        getCommand("client").setExecutor(new BrandsCommand());
-        getCommand("client").setTabCompleter(new BrandsCommand());
-
-        getCommand("alts").setExecutor(new AltsCommand());
-        getCommand("alts").setTabCompleter(new AltsCommand());
-
-        getCommand("ips").setExecutor(new IpsCommand());
-        getCommand("ips").setTabCompleter(new IpsCommand());
-
-        getCommand("informer").setExecutor(new InformerCommand());
-        getCommand("informer").setTabCompleter(new InformerCommand());
-
-        getCommand("dataremove").setExecutor(new RemoveCommand());
-        getCommand("dataremove").setTabCompleter(new RemoveCommand());
+        this.getLifecycleManager().registerEventHandler(LifecycleEvents.COMMANDS, commands -> {
+            commands.registrar().register("client", new BrandsCommand());
+            commands.registrar().register("alts", new AltsCommand());
+            commands.registrar().register("ips", new IpsCommand());
+            commands.registrar().register("informer", new InformerCommand());
+            commands.registrar().register("dataremove", new RemoveCommand());
+        });
 
         Bukkit.getMessenger().registerIncomingPluginChannel(this, "minecraft:brand", new JoinEvent());
         Bukkit.getPluginManager().registerEvents(new LeaveEvent(), this);

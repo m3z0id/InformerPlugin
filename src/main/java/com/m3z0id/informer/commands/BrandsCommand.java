@@ -2,37 +2,46 @@ package com.m3z0id.informer.commands;
 
 import com.m3z0id.informer.Informer;
 import com.m3z0id.informer.config.Lang;
+import io.papermc.paper.command.brigadier.BasicCommand;
+import io.papermc.paper.command.brigadier.CommandSourceStack;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.bukkit.Bukkit;
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
-import org.bukkit.command.TabCompleter;
+import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
+import org.jspecify.annotations.Nullable;
 
-import javax.annotation.Nonnull;
-import java.util.List;
+import java.util.Collection;
 
-public class BrandsCommand implements CommandExecutor, TabCompleter {
+public class BrandsCommand implements BasicCommand {
     @Override
-    public boolean onCommand(@Nonnull CommandSender commandSender, @Nonnull Command command, @Nonnull String s, @Nonnull String[] args) {
+    public void execute(CommandSourceStack commandSourceStack, String[] args) {
         Player player = Bukkit.getPlayer(args[0]);
         Lang lang = Informer.instance.lang;
         if (player == null) {
-            commandSender.sendMessage(LegacyComponentSerializer.legacySection().deserialize(lang.getServerPrefix() + lang.getNothingFound()));
-            return true;
+            commandSourceStack.getSender().sendMessage(LegacyComponentSerializer.legacySection().deserialize(lang.getServerPrefix() + lang.getNothingFound()));
+            return;
         }
         String brand = Informer.instance.clientBrands.getOrDefault(player.getName(), null);
         if (brand == null) {
-            commandSender.sendMessage(LegacyComponentSerializer.legacySection().deserialize(lang.getServerPrefix() + lang.getNothingFound()));
-            return true;
+            commandSourceStack.getSender().sendMessage(LegacyComponentSerializer.legacySection().deserialize(lang.getServerPrefix() + lang.getNothingFound()));
+            return;
         }
-        commandSender.sendMessage(LegacyComponentSerializer.legacySection().deserialize(lang.getServerPrefix() + lang.getBrandMessage().replaceAll("%brand%", brand).replaceAll("%player%", player.getName())));
-        return true;
+        commandSourceStack.getSender().sendMessage(LegacyComponentSerializer.legacySection().deserialize(lang.getServerPrefix() + lang.getBrandMessage().replaceAll("%brand%", brand).replaceAll("%player%", player.getName())));
     }
 
     @Override
-    public List<String> onTabComplete(@Nonnull CommandSender commandSender, @Nonnull Command command, @Nonnull String s, @Nonnull String[] args) {
-        return null;
+    public Collection<String> suggest(CommandSourceStack commandSourceStack, String[] args) {
+        return Bukkit.getOnlinePlayers().stream().map(Player::getName).toList();
+    }
+
+    @Override
+    public boolean canUse(CommandSender sender) {
+        return sender.isOp() || sender instanceof ConsoleCommandSender || sender.hasPermission("informer.brands");
+    }
+
+    @Override
+    public @Nullable String permission() {
+        return "informer.brands";
     }
 }

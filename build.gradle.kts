@@ -1,13 +1,14 @@
 plugins {
-    `java-library`
+    id("java")
+    id("io.papermc.paperweight.userdev") version "2.0.0-beta.17"
 }
 
-group = "com.m3z0id.gunGame"
+group = "com.m3z0id.informer"
 version = "1.0"
-description = "A plugin that hhows you info about a player, like alts or client."
+description = "A plugin that shows you info about a player, like alts or client."
 
 java {
-    toolchain.languageVersion = JavaLanguageVersion.of(17)
+    toolchain.languageVersion = JavaLanguageVersion.of(21)
 }
 
 repositories {
@@ -21,13 +22,13 @@ repositories {
 }
 
 dependencies {
-    compileOnly("io.papermc.paper:paper-api:1.18.2-R0.1-SNAPSHOT")
+    paperweight.paperDevBundle("1.21.4-R0.1-SNAPSHOT")
     implementation("com.google.code.gson:gson:2.13.1")
 }
 
 tasks {
     compileJava {
-        options.release = 17
+        options.release = 21
     }
 
     processResources {
@@ -41,4 +42,8 @@ tasks {
         inputs.properties(props)
         filesMatching("paper-plugin.yml") { expand(props) }
     }
+}
+
+tasks.assemble {
+    paperweight.reobfArtifactConfiguration = io.papermc.paperweight.userdev.ReobfArtifactConfiguration.MOJANG_PRODUCTION
 }

@@ -1,4 +1,4 @@
-package com.m3z0id.informer.events.join;
+package com.m3z0id.informer.events;
 
 import com.m3z0id.informer.Informer;
 import org.bukkit.entity.Player;
