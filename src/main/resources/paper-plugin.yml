@@ -1,27 +1,8 @@
 name: Informer
-version: '1.0'
+version: '1.0.1'
 main: com.m3z0id.informer.Informer
-api-version: '1.18.2'
-load: STARTUP
+api-version: '1.21.4'
 authors: [ M3z0id ]
-description: Shows you info about a player, like alts or client.
-
-commands:
-  client:
-    usage: /<command> <player>
-    permission: informer.client
-  alts:
-    usage: /<command> [player]
-    permission: informer.alts
-  ips:
-    usage: /<command> [player]
-    permission: informer.ips
-  informer:
-    usage: /<command> [reload/info]
-    permission: informer.info
-  dataremove:
-    usage: /<command> [ip/player] <value>
-    permission: informer.remove
 
 permissions:
   informer.*:

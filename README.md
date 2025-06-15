@@ -41,8 +41,8 @@ InformerPlugin is a Minecraft server plugin for Paper that provides information 
 
 ## Requirements
 
-- PaperMC 1.18.2 or newer
-- Java 17 or newer
+- PaperMC
+- Java 21 or newer
 
 ## License
 
