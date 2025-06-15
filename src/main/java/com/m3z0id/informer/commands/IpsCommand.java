@@ -6,7 +6,6 @@ import com.m3z0id.informer.database.Database;
 import io.papermc.paper.command.brigadier.BasicCommand;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
-import org.bukkit.ChatColor;
 import org.bukkit.command.*;
 import org.jspecify.annotations.Nullable;
 
@@ -18,7 +17,7 @@ public class IpsCommand implements BasicCommand {
     public void execute(CommandSourceStack commandSourceStack, String[] args) {
         Lang lang = Informer.instance.lang;
         if(args.length == 0) {
-            commandSourceStack.getSender().sendMessage(LegacyComponentSerializer.legacySection().deserialize(lang.getServerPrefix() + ChatColor.RED + "This is a console-only command."));
+            commandSourceStack.getSender().sendMessage(LegacyComponentSerializer.legacySection().deserialize(lang.getServerPrefix() + "&cThis is a console-only command."));
             return;
         }
         Database database = Informer.instance.database;
