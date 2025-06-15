@@ -2,52 +2,48 @@ package com.m3z0id.informer.commands;
 
 import com.m3z0id.informer.Informer;
 import com.m3z0id.informer.config.Lang;
+import io.papermc.paper.command.brigadier.BasicCommand;
+import io.papermc.paper.command.brigadier.CommandSourceStack;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
-import org.bukkit.ChatColor;
 import org.bukkit.command.*;
+import org.jspecify.annotations.Nullable;
 
-import javax.annotation.Nonnull;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
-public class RemoveCommand implements CommandExecutor, TabCompleter {
+public class RemoveCommand implements BasicCommand {
     @Override
-    public boolean onCommand(@Nonnull CommandSender commandSender, @Nonnull Command command, @Nonnull String s, @Nonnull String[] args) {
+    public void execute(CommandSourceStack commandSourceStack, String[] args) {
         Lang lang = Informer.instance.lang;
         if(args.length == 0) {
-            commandSender.sendMessage(LegacyComponentSerializer.legacySection().deserialize(lang.getServerPrefix() + ChatColor.RED + "This is a console-only command."));
-            return true;
+            commandSourceStack.getSender().sendMessage(LegacyComponentSerializer.legacySection().deserialize(lang.getServerPrefix() + "&cThis is a console-only command."));
+            return;
         }
         if(args.length != 2) {
-            commandSender.sendMessage(LegacyComponentSerializer.legacySection().deserialize(lang.getServerPrefix() + lang.getUnknownSubcommand()));
-            return true;
+            commandSourceStack.getSender().sendMessage(LegacyComponentSerializer.legacySection().deserialize(lang.getServerPrefix() + lang.getUnknownSubcommand()));
+            return;
         }
         if(args[0].equalsIgnoreCase("ip")) {
             String ip = "/" + args[1];
             Informer.instance.database.removeIp(ip);
-            commandSender.sendMessage(LegacyComponentSerializer.legacySection().deserialize(lang.getServerPrefix() + lang.getSuccessMessage()));
-            return true;
+            commandSourceStack.getSender().sendMessage(LegacyComponentSerializer.legacySection().deserialize(lang.getServerPrefix() + lang.getSuccessMessage()));
         }
         else if(args[0].equalsIgnoreCase("player")) {
             List<String> ips = Informer.instance.database.getIps();
             if(ips.isEmpty()){
-                commandSender.sendMessage(LegacyComponentSerializer.legacySection().deserialize(lang.getServerPrefix() + lang.getSuccessMessage()));
-                return true;
+                commandSourceStack.getSender().sendMessage(LegacyComponentSerializer.legacySection().deserialize(lang.getServerPrefix() + lang.getSuccessMessage()));
+                return;
             }
             ips.forEach(ip -> Informer.instance.database.removePlayer(args[1], "/" + ip));
-            commandSender.sendMessage(LegacyComponentSerializer.legacySection().deserialize(lang.getServerPrefix() + lang.getSuccessMessage()));
-            return true;
+            commandSourceStack.getSender().sendMessage(LegacyComponentSerializer.legacySection().deserialize(lang.getServerPrefix() + lang.getSuccessMessage()));
         } else {
-            commandSender.sendMessage(LegacyComponentSerializer.legacySection().deserialize(lang.getServerPrefix() + lang.getUnknownSubcommand()));
-            return true;
+            commandSourceStack.getSender().sendMessage(LegacyComponentSerializer.legacySection().deserialize(lang.getServerPrefix() + lang.getUnknownSubcommand()));
         }
     }
 
     @Override
-    public List<String> onTabComplete(@Nonnull CommandSender commandSender, @Nonnull Command command, @Nonnull String s, @Nonnull String[] args) {
-        if(!(commandSender instanceof ConsoleCommandSender)){
-            return List.of();
-        }
+    public Collection<String> suggest(CommandSourceStack commandSourceStack, String[] args) {
         List<String> list = new ArrayList<>();
         if(args.length == 1) {
             if("ip".startsWith(args[0])) {
@@ -70,5 +66,15 @@ public class RemoveCommand implements CommandExecutor, TabCompleter {
             }
         }
         return list;
+    }
+
+    @Override
+    public boolean canUse(CommandSender sender) {
+        return sender.isOp() || sender instanceof ConsoleCommandSender || sender.hasPermission("informer.remove");
+    }
+
+    @Override
+    public @Nullable String permission() {
+        return "informer.remove";
     }
 }

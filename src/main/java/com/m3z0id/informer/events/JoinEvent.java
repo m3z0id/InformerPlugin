@@ -1,4 +1,4 @@
-package com.m3z0id.informer.events.join;
+package com.m3z0id.informer.events;
 
 import com.m3z0id.informer.Informer;
 import com.m3z0id.informer.config.Lang;
